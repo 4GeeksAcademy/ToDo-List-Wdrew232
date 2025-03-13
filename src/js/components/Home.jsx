@@ -1,28 +1,52 @@
-import React from "react";
-
-//include images into your bundle
+import React, { useState } from "react";
+// Include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 
-//create your first component
+// Create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+  const [items, setItems] = useState([]);
+  const [input, setInput] = useState("");
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+  const AddItem = () => {
+    if (input.trim() !== "") {
+      setItems([...items, input]);
+      setInput("");
+    }
+  };
+
+  const DeleteItem = (index) => {
+    const newItems = items.filter((_, i) => i !== index);
+    setItems(newItems);
+  };
+
+  return (
+    <div className="text-center">
+      <div className="todoList">
+        <div className="header">
+          <h1>ToDo's</h1>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Add a new task"
+          />
+          <button onClick={AddItem}>Add +</button>
+        </div>
+        <div className="List">
+          <ul>
+            {items.map((item, index) => (
+              <li key={index} className="todo-item">
+                {item}
+                <button className="delete-btn" onClick={() => DeleteItem(index)}>
+                  X
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Home;
